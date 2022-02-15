@@ -1,10 +1,22 @@
 name: Pipeline to test project auto-assignment to issue
 on:
+  repository_dispatch:
+    types: [org-workflow-bot]
   issues:
     types: [opened]
 env:
   GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 jobs:
+  register-and-lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: SvanBoxel/organization-workflow@main
+      with:
+        id: ${{ github.event.client_payload.id }}
+        callback_url: ${{ github.event.client_payload.callback_url }}
+        sha: ${{ github.event.client_payload.sha }}
+        run_id: ${{ github.run_id }}
+        name: ${{ github.workflow }}
   assign_one_project:
     runs-on: ubuntu-latest
     name: Assign to One Project
