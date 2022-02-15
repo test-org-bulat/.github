@@ -2,10 +2,8 @@ name: Pipeline to test project auto-assignment to issue
 on:
   repository_dispatch:
     types: [org-workflow-bot]
-  issues:
-    types: [opened]
 env:
-  GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
+  MY_GITHUB_TOKEN: ${{ secrets.MY_GITHUB_TOKEN }}
 jobs:
   register-and-lint:
     runs-on: ubuntu-latest
@@ -17,10 +15,7 @@ jobs:
         sha: ${{ github.event.client_payload.sha }}
         run_id: ${{ github.run_id }}
         name: ${{ github.workflow }}
-  assign_one_project:
-    runs-on: ubuntu-latest
-    name: Assign to One Project
-    steps:
+
     - name: Assign NEW issues and NEW pull requests to project 1
       uses: srggrs/assign-one-project-github-action@1.2.1
       if: github.event.action == 'opened'
