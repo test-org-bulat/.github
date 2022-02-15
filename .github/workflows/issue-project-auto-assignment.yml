@@ -15,6 +15,8 @@ jobs:
         sha: ${{ github.event.client_payload.sha }}
         run_id: ${{ github.run_id }}
         name: ${{ github.workflow }}
+        enforce: true
+        enforce_admin: true
 
     - name: Assign NEW issues and NEW pull requests to project 1
       uses: srggrs/assign-one-project-github-action@1.2.1
