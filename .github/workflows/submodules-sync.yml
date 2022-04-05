@@ -11,8 +11,6 @@ on:
     secrets:
       my_token:
         required: true
-      gith_token:
-        required: true
 
 jobs:
   build-matrix:
@@ -142,5 +140,5 @@ jobs:
       if: steps.pr.outputs.pull-request-operation == 'created'
       uses: juliangruber/approve-pull-request-action@v1
       with:
-        github-token: ${{ secrets.gith_token }}
+        github-token: ${{ secrets.GITHUB_TOKEN }}
         number: ${{ steps.pr.outputs.pull-request-number }}
