@@ -119,22 +119,22 @@ jobs:
         # open or update always has exactly one commit in it.
         delete-branch: true
 
-    - name: Set auto-merge on PR
-      # We only need to do this when the PR is first created, not on subsequent
-      # updates.
-      #
-      # This action is picky about when it's allowed to be run:
-      # - There MUST be a branch protection rule that prevents this PR from
-      #   immediately getting merged.
-      # - The branch MUST have auto-merging permitted in its settings.
-      if: steps.pr.outputs.pull-request-operation == 'created'
-      uses: peter-evans/enable-pull-request-automerge@v1
-      with:
-        # We must use a Personal Access Token (PAT) here; see docs:
-        #   https://github.com/peter-evans/enable-pull-request-automerge
-        token: ${{ secrets.my_token }}
-        pull-request-number: ${{ steps.pr.outputs.pull-request-number }}
-        merge-method: "rebase"
+#    - name: Set auto-merge on PR
+#      # We only need to do this when the PR is first created, not on subsequent
+#      # updates.
+#      #
+#      # This action is picky about when it's allowed to be run:
+#      # - There MUST be a branch protection rule that prevents this PR from
+#      #   immediately getting merged.
+#      # - The branch MUST have auto-merging permitted in its settings.
+#      if: steps.pr.outputs.pull-request-operation == 'created'
+#      uses: peter-evans/enable-pull-request-automerge@v1
+#      with:
+#        # We must use a Personal Access Token (PAT) here; see docs:
+#        #   https://github.com/peter-evans/enable-pull-request-automerge
+#        token: ${{ secrets.my_token }}
+#        pull-request-number: ${{ steps.pr.outputs.pull-request-number }}
+#        merge-method: "rebase"
 
     - name: Auto-approve PR
       # We only need to do this when the PR is first created, not on subsequent
