@@ -8,6 +8,11 @@ on:
   # Allows you to run this workflow manually from the Actions tab or through
   # the HTTP API.
   workflow_call:
+    secrets:
+      my_token:
+        required: true
+      github_token:
+        required: true
 
 jobs:
   build-matrix:
@@ -16,7 +21,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.MY_GITHUB_TOKEN }}
+          token: ${{ secrets.my_token }}
           submodules: recursive
       - id: set-matrix
         name: Set matrix based on modified submodules
@@ -61,7 +66,7 @@ jobs:
         # Deploy Keys would be, but works for all repositories that we need to
         # pull, allowing us to do a single `checkout` to get our full source
         # tree. Hence we have our `Rebot` user, and use a PAT for that user.
-        token: ${{ secrets.MY_GITHUB_TOKEN }}
+        token: ${{ secrets.my_token }}
         submodules: recursive
 
     # Update references.
@@ -99,7 +104,7 @@ jobs:
         # use a Personal Access Token instead. See docs:
         #   https://github.com/peter-evans/create-pull-request/blob/main/docs/concepts-guidelines.md#triggering-further-workflow-runs
         # We re-use the one use to pull the repo, above.
-        token: ${{ secrets.MY_GITHUB_TOKEN }}
+        token: ${{ secrets.my_token }}
         # The following email address is Rebot's GitHub address - see:
         #   https://github.com/settings/emails
         committer: Bulat Nizamutdinov <Bulat.Nizamutdinov@itechart-group.com>
@@ -127,7 +132,7 @@ jobs:
       with:
         # We must use a Personal Access Token (PAT) here; see docs:
         #   https://github.com/peter-evans/enable-pull-request-automerge
-        token: ${{ secrets.MY_GITHUB_TOKEN }}
+        token: ${{ secrets.my_token }}
         pull-request-number: ${{ steps.pr.outputs.pull-request-number }}
         merge-method: "rebase"
 
@@ -137,5 +142,5 @@ jobs:
       if: steps.pr.outputs.pull-request-operation == 'created'
       uses: juliangruber/approve-pull-request-action@v1
       with:
-        github-token: ${{ secrets.GITHUB_TOKEN }}
+        github-token: ${{ secrets.github_token }}
         number: ${{ steps.pr.outputs.pull-request-number }}
